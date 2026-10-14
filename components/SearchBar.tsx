@@ -7,9 +7,10 @@ interface Props {
   value?: string;
   onChangeText?: (text: string) => void;
   onPress?: () => void;
+  onSubmit?: () => void;
 }
 
-const SearchBar = ({ placeholder, value, onChangeText, onPress }: Props) => {
+const SearchBar = ({ placeholder, value, onChangeText, onPress, onSubmit }: Props) => {
   return (
     <View className="flex-row items-center bg-dark-200 rounded-full px-5 py-4">
       <Image
@@ -19,7 +20,12 @@ const SearchBar = ({ placeholder, value, onChangeText, onPress }: Props) => {
         tintColor="#AB8BFF"
       />
       <TextInput
+        autoCapitalize="none"
+        autoCorrect={false}
+        returnKeyType="search"
+        accessibilityLabel={placeholder}
         onPress={onPress}
+        onSubmitEditing={onSubmit}
         placeholder={placeholder}
         value={value}
         onChangeText={onChangeText}

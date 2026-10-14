@@ -9,17 +9,18 @@ const MovieCard = ({
   title,
   vote_average,
   release_date,
-}: Movie) => {
+  openPlayer = false,
+}: Movie & { openPlayer?: boolean }) => {
   return (
-    <Link href={`/movie/${id}`} asChild>
-      <TouchableOpacity className="w-[30%]">
+    <Link href={openPlayer ? `/watch/${id}` : `/movie/${id}`} asChild>
+      <TouchableOpacity className="flex-1" style={{ maxWidth: "31%" }} accessibilityRole="button" accessibilityLabel={`${openPlayer ? "Watch" : "View"} ${title}`}>
         <Image
           source={{
             uri: poster_path
               ? `https://image.tmdb.org/t/p/w500${poster_path}`
               : "https://placehold.co/600x400/1a1a1a/FFFFFF.png",
           }}
-          className="w-full h-52 rounded-lg"
+          className="w-full rounded-lg" style={{ aspectRatio: 2 / 3 }}
           resizeMode="cover"
         />
 

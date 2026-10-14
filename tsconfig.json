@@ -17,5 +17,14 @@
     "app/_layout.tsx",
     "nativewind-env.d.ts",
     "types/**/*.d.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    ".task-backups",
+    "android",
+    "ios",
+    "dist",
+    ".credentials",
+    ".expo/build-tmp"
   ]
 }

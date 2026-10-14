@@ -1,37 +1,42 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 
 const useFetch = <T>(fetchFunction: () => Promise<T>, autoFetch = true) => {
   const [data, setData] = useState<T | null>(null);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(autoFetch);
   const [error, setError] = useState<Error | null>(null);
+  const fetchRef = useRef(fetchFunction);
+  fetchRef.current = fetchFunction;
+  const requestId = useRef(0);
 
-  const fetchData = async () => {
-    try {
-      setLoading(true);
-      setError(null);
-
-      const result = await fetchFunction();
-      setData(result);
-    } catch (err) {
-      setError(
-        err instanceof Error ? err : new Error("An unknown error occurred")
-      );
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const reset = () => {
+  const reset = useCallback(() => {
+    requestId.current += 1;
     setData(null);
     setError(null);
     setLoading(false);
-  };
+  }, []);
 
-  useEffect(() => {
-    if (autoFetch) {
-      fetchData();
+  const fetchData = useCallback(async (): Promise<T | undefined> => {
+    const currentId = ++requestId.current;
+    setLoading(true);
+    setError(null);
+    try {
+      const result = await fetchRef.current();
+      if (currentId !== requestId.current) return;
+      setData(result);
+      return result;
+    } catch (err) {
+      if (currentId === requestId.current) {
+        setError(err instanceof Error ? err : new Error("An unknown error occurred"));
+      }
+    } finally {
+      if (currentId === requestId.current) setLoading(false);
     }
   }, []);
+
+  useEffect(() => {
+    if (autoFetch) void fetchData();
+    return () => { requestId.current += 1; };
+  }, [autoFetch, fetchData]);
 
   return { data, loading, error, refetch: fetchData, reset };
 };

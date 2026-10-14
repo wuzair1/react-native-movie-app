@@ -20,6 +20,9 @@
     </div>
 </div>
 
+For Android setup, environment variables, APK/AAB builds, and device checks,
+see [ANDROID.md](./ANDROID.md).
+
 ## 📋 <a name="table">Table of Contents</a>
 
 1. 🤖 [Introduction](#introduction)

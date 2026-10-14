@@ -9,10 +9,13 @@ import { fetchMovies } from "@/services/api";
 import { updateSearchCount } from "@/services/appwrite";
 
 import SearchBar from "@/components/SearchBar";
+import { getFreeMovie } from "@/constants/freeMovies";
 import MovieDisplayCard from "@/components/MovieCard";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const Search = () => {
   const [searchQuery, setSearchQuery] = useState("");
+  const insets = useSafeAreaInsets();
 
   const {
     data: movies = [],
@@ -28,21 +31,23 @@ const Search = () => {
 
   // Debounced search effect
   useEffect(() => {
+    reset();
+    let active = true;
     const timeoutId = setTimeout(async () => {
       if (searchQuery.trim()) {
-        await loadMovies();
+        const results = await loadMovies();
 
         // Call updateSearchCount only if there are results
-        if (movies?.length! > 0 && movies?.[0]) {
-          await updateSearchCount(searchQuery, movies[0]);
+        if (active && results?.[0]) {
+          await updateSearchCount(searchQuery.trim(), results[0]);
         }
       } else {
         reset();
       }
     }, 500);
 
-    return () => clearTimeout(timeoutId);
-  }, [searchQuery]);
+    return () => { active = false; clearTimeout(timeoutId); reset(); };
+  }, [searchQuery, loadMovies, reset]);
 
   return (
     <View className="flex-1 bg-primary">
@@ -54,19 +59,21 @@ const Search = () => {
 
       <FlatList
         className="px-5"
-        data={movies as Movie[]}
+        data={movies ?? []}
+        keyboardShouldPersistTaps="handled"
+        keyboardDismissMode="on-drag"
         keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => <MovieDisplayCard {...item} />}
+        renderItem={({ item }) => <MovieDisplayCard {...item} openPlayer={Boolean(getFreeMovie(item.id))} />}
         numColumns={3}
         columnWrapperStyle={{
           justifyContent: "flex-start",
-          gap: 16,
+          gap: 12,
           marginVertical: 16,
         }}
-        contentContainerStyle={{ paddingBottom: 100 }}
+        contentContainerStyle={{ paddingTop: insets.top + 24, paddingBottom: insets.bottom + 90 }}
         ListHeaderComponent={
           <>
-            <View className="w-full flex-row justify-center mt-20 items-center">
+            <View className="w-full flex-row justify-center items-center">
               <Image source={icons.logo} className="w-12 h-10" />
             </View>
 

@@ -1,0 +1,5 @@
+assets/images/tmdb-logo.svg is the unmodified blue-short logo from:
+https://www.themoviedb.org/about/logos-attribution
+https://www.themoviedb.org/assets/v4/logos/v2/blue_short-8e7b30f73a4020692ccca9c88bafe5dcb6f8a62a4c6bc55cd9ba82bb2cd95f6c.svg
+Saved 2026-10-14. constants/tmdbLogo.ts contains the same SVG for native rendering.
+Display it without changing its colors or aspect ratio. TMDB attribution appears in Profile.

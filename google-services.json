@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "30879977449",
+    "project_id": "jn-lucky-drama-app-66466",
+    "storage_bucket": "jn-lucky-drama-app-66466.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:30879977449:android:5145d3ab843f6cbf2f0578",
+        "android_client_info": {
+          "package_name": "com.JN.drama.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC5F6Tiq1pCKWo0feX0Voucpj17ZpHXABw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -31,6 +31,10 @@ yarn-error.*
 
 # local env files
 .env*.local
+.env
+.idea/
+/android/
+/ios/
 
 # typescript
 *.tsbuildinfo
@@ -39,3 +43,8 @@ app-example
 
 # vscode
 .vscode
+
+.task-backups/
+
+.credentials/
+release/
